@@ -18,3 +18,5 @@
 # vendor/
 
 notes.md
+
+vendor/*
