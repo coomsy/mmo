@@ -7,6 +7,7 @@ import (
 var AppConfig Config
 
 type Config struct {
+	// is port
 	Port        int    `env:"MMO_PORT" envDefault:"8080"`
 	Environment string `env:"MMO_ENVIRONMENT" envDefault:"dev"`
 	Debug       bool   `env:"MMO_DEBUG" envDefault:"false"`
@@ -17,6 +18,7 @@ type Config struct {
 }
 
 func InitAppConfig() error {
+	// TODO: std Flags has a env load function, use it
 	err := env.Parse(&AppConfig)
 	if err != nil {
 		return err

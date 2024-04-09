@@ -1,29 +1,37 @@
 package main
 
 import (
-	"fmt"
+	"runtime"
 
-	"github.com/coomsy/mmo/cmd/api/app"
-	"github.com/coomsy/mmo/internal/config"
-	"github.com/coomsy/mmo/pkg/logger"
+	"github.com/coomsy/mmo/pkg/api/server"
+	"github.com/coomsy/mmo/pkg/config"
+	"github.com/coomsy/mmo/pkg/log"
 )
 
 func init() {
 	if err := config.InitAppConfig(); err != nil {
-		logger.Fatal(err.Error())
+		log.Fatal(err.Error())
 	}
 
-	logger.Info("Config loaded")
-	logger.Debug(fmt.Sprintf("Config Values %+v\n", config.AppConfig))
+	log.Info("Config loaded")
+	log.Debugf("Config Values %+v\n", config.AppConfig)
 }
 
 func main() {
-	server, err := app.NewApp()
+	// might need with nginx, to get correct client metadata? https://github.com/gin-gonic/examples/tree/master/reverse-proxy
+	numCPU := runtime.NumCPU()
+	log.Infof("Running on %d CPU", numCPU)
+
+	if runtime.NumCPU() > 2 {
+		runtime.GOMAXPROCS(numCPU / 2)
+	}
+
+	server, err := server.NewServer()
 
 	if err != nil {
-		logger.Panic(err.Error())
+		log.Error(err.Error())
 	}
 	if err := server.Run(); err != nil {
-		logger.Fatal(err.Error())
+		log.Fatal(err.Error())
 	}
 }
