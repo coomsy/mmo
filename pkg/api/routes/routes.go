@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+
 func Root(rw http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case http.MethodGet:

@@ -1,11 +1,11 @@
-package user
+package v0alpha1
 
 import (
 	"time"
 )
 
 type User struct {
-	ID       string
+	Id       string
 	Username string
 	Email    string
 

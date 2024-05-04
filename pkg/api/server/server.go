@@ -12,7 +12,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 
-	v1User "github.com/coomsy/mmo/pkg/api/handlers/user/v1"
+	guildV1 "github.com/coomsy/mmo/pkg/api/handlers/guild/v1"
+	userV1 "github.com/coomsy/mmo/pkg/api/handlers/user/v1"
 	"github.com/coomsy/mmo/pkg/config"
 	"github.com/coomsy/mmo/pkg/log"
 )
@@ -23,8 +24,6 @@ type HTTPServer struct {
 }
 
 func NewServer() (*HTTPServer, error) {
-	// https://github.com/grafana/grafana/blob/main/pkg/api/api.go
-
 	r := newRouter()
 
 	SetupRoutes(r)
@@ -90,10 +89,16 @@ func SetupRoutes(mux *chi.Mux) {
 
 	// api, dbconn, redisCache, ristrettoCache, authMiddleware, mailerService
 
-	userHandler := v1User.SetupHandler()
+	userHandler := userV1.SetupHandler()
+
+	guildHandler := guildV1.SetupHandler()
+	// https://thedevelopercafe.com/articles/restful-routing-with-chi-in-go-d05a2f952b3d#grouping-routes
 
 	mux.Route("/v1", func(r chi.Router) {
-		mux.Get("/user", userHandler.GetUser)
-		mux.Get("/user/{userId}", userHandler.GetUserById)
+		r.Get("/user", userHandler.GetUser)
+		r.Get("/user/{userId}", userHandler.GetUserById)
+
+		r.Get("/guild", guildHandler.GetGuild)
+		r.Get("/guild/{id}", guildHandler.GetGuildById)
 	})
 }

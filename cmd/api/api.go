@@ -14,7 +14,7 @@ func init() {
 	}
 
 	log.Info("Config loaded")
-	log.Debugf("Config Values %+v\n", config.AppConfig)
+	log.Debugf("Config Values %+v", config.AppConfig)
 }
 
 func main() {
