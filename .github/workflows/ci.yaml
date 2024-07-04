@@ -1,0 +1,26 @@
+---
+name: CI
+on:
+  pull_request:
+
+# for tests: https://github.com/ossf/scorecard-action
+
+jobs:
+  test_go:
+    name: Go tests
+    runs-on: ubuntu-latest
+    container:
+      image: quay.io/prometheus/golang-builder:1.22-base
+    steps:
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+      - run: make go-test-full
+
+# TODO: make container with nextjs
+#  test_ui:
+#    name: UI tests
+#    runs-on: ubuntu-latest
+#    container:
+#      image: quay.io/prometheus/golang-builder:1.22-base
+#    steps:
+#      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+#      - run: make ui-test-full
