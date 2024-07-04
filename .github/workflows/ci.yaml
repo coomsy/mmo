@@ -1,0 +1,21 @@
+---
+name: CI
+on:
+  pull_request:
+
+jobs:
+  test_go:
+    name: Go tests
+    runs-on: ubuntu-latest
+    container:
+      image: quay.io/prometheus/golang-builder:1.22-base
+    steps:
+      - run: make go-test-full
+
+  test_ui:
+    name: UI tests
+    runs-on: ubuntu-latest
+    container:
+      image: quay.io/prometheus/golang-builder:1.22-base
+    steps:
+      - run: make ui-test-full
